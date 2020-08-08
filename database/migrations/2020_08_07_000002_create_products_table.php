@@ -15,10 +15,10 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
-            $table->string('name');
-            $table->unsignedInteger('stock')->default(0);
-            $table->unsignedDouble('price', '15', '2');
+            $table->string('uuid',191)->unique();
+            $table->string('name')->nullable();
+            $table->integer('stock')->default(1);
+            $table->unsignedDouble('price', '15', '2')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 }
