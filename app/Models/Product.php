@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -12,14 +13,22 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'uuid', 'name', 'stock', 'price',
+        'id', 'uuid', 'name', 'stock', 'price',
     ];
 
     protected $casts = [
         'id' => 'integer',
         'stock' => 'integer',
         'price' => 'double',
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
     ];
+
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
+    }
+
+    public function getUpdatedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
+    }
 }

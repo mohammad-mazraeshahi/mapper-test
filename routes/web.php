@@ -13,11 +13,15 @@
 
 $router->get('/', 'HomeController@index');
 
-$router->group(['prefix' => 'api' ,'as' => 'api.'], function ($router) {
-    $router->group(['prefix' => 'v1' , 'as' => 'v1.'], function ($router) {
+$router->group(['prefix' => 'api', 'as' => 'api.'], function ($router) {
+    $router->group(['prefix' => 'v1', 'as' => 'v1.'], function ($router) {
         $router->get('/products', [
             'uses' => 'ProductController@index',
             'as' => 'products',
+        ]);
+        $router->post('/events', [
+            'uses' => 'EventController@receive',
+            'as' => 'events',
         ]);
     });
 });

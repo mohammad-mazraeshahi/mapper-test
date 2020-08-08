@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\CreateProductEvent;
+use App\Events\ProductOrderEvent;
+use App\Events\UpdateProductEvent;
+use App\Listeners\CreateProductListener;
+use App\Listeners\ProductOrderListener;
+use App\Listeners\UpdateProductListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,8 +18,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\ExampleEvent::class => [
-            \App\Listeners\ExampleListener::class,
+        CreateProductEvent::class => [
+            CreateProductListener::class,
+        ],
+        UpdateProductEvent::class => [
+            UpdateProductListener::class,
+        ],
+        ProductOrderEvent::class => [
+            ProductOrderListener::class,
         ],
     ];
 }
