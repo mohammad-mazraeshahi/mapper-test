@@ -34,7 +34,12 @@ class ProductOrderListener
     public function handle(ProductOrderEvent $event)
     {
         $product = $this->productRepository->getbyUuid($event->product->uuid);
-        $product->stock--;
+        if (empty($product->toArray())) {
+            $product = $this->productRepository->create($event->product);
+            $product->stock = 0;
+        } else {
+            $product->stock--;
+        }
         $this->productRepository->update($product);
 
         $order = $this->orderRepository->create(new Order([

@@ -11,10 +11,13 @@
 |
 */
 
-$router->get('/', 'HomeController@index');
+$router->get('/', [
+    'uses' => 'HomeController@index',
+    'as' => 'home'
+]);
 
-$router->group(['prefix' => 'api', 'as' => 'api.'], function ($router) {
-    $router->group(['prefix' => 'v1', 'as' => 'v1.'], function ($router) {
+$router->group(['prefix' => 'api', 'as' => 'api'], function ($router) {
+    $router->group(['prefix' => 'v1', 'as' => 'v1'], function ($router) {
         $router->get('/products', [
             'uses' => 'ProductController@index',
             'as' => 'products',
