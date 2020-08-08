@@ -4,6 +4,8 @@
 namespace App\Repositories;
 
 
+use Illuminate\Database\Eloquent\Model;
+
 interface EntityRepositoryInterface
 {
     public function all();
@@ -12,7 +14,9 @@ interface EntityRepositoryInterface
 
     public function get($query);
 
-    public function update($id,$param);
+    public function update($id,Model $model);
 
     public function delete($id);
+
+    public function create(Model $model);
 }

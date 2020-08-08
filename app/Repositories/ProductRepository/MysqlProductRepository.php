@@ -3,6 +3,9 @@
 
 namespace App\Repositories\ProductRepository;
 
+use App\Models\Product;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class MysqlProductRepository implements ProductRepositoryInterface
@@ -13,23 +16,66 @@ class MysqlProductRepository implements ProductRepositoryInterface
         return DB::table('products')->get();
     }
 
-    public function getById($id)
+    /**
+     * @param string $uuid
+     * @return Product
+     */
+    public function getByUuid($uuid)
     {
-        // TODO: Implement getById() method.
+        return (new Product((array)DB::table('products')->where('uuid', $uuid)->first()));
     }
 
-    public function get($query)
+    /**
+     * @param Product $product
+     * @return Product
+     */
+    public function updateOrCreate(Product $product)
     {
-        // TODO: Implement get() method.
+        $productInDatabase = $this->CheckExist($product);
+
+        if ($productInDatabase) {
+            $product->id = $productInDatabase->id;
+            $product = $this->update($product);
+        } else {
+            $product = $this->create($product);
+        }
+
+        return $product;
     }
 
-    public function update($id, $param)
+
+    /**
+     * @param Product $product
+     * @return Product
+     */
+    public function create(Product $product)
     {
-        // TODO: Implement update() method.
+        $product->setCreatedAt(Carbon::now()->toString());
+        $product->setUpdatedAt(Carbon::now()->toString());
+        $product->id = DB::table('products')->insertGetId($product->attributesToArray());
+        return $product;
     }
 
-    public function delete($id)
+    /**
+     * @param Product $product
+     * @return Model|null
+     */
+    public function CheckExist(Product $product)
     {
-        // TODO: Implement delete() method.
+        return DB::table('products')->where('uuid', $product->uuid)->first();
+    }
+
+    /**
+     * @param Product $product
+     * @return Product
+     */
+    public function update(Product $product)
+    {
+        $product->setUpdatedAt(Carbon::now()->toString());
+        DB::table('products')
+            ->where('uuid', $product->uuid)
+            ->update($product->toArray());
+
+        return $product;
     }
 }

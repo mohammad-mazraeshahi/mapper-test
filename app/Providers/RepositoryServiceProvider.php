@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\OrderRepository\MysqlOrderRepository;
+use App\Repositories\OrderRepository\OrderRepositoryInterface;
 use App\Repositories\ProductRepository\MysqlProductRepository;
 use App\Repositories\ProductRepository\ProductRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -26,5 +28,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(ProductRepositoryInterface::class, MysqlProductRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, MysqlOrderRepository::class);
     }
 }
